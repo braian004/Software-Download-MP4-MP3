@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube MP3 Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .message {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h2>YouTube MP4 Downloader</h2>
+    <form method="post" action="/">
+        <label for="video_url">Enter YouTube Video URL:</label>
+        <input type="text" id="video_url" name="video_url" value="{{ video_url }}" required>
+        <button type="submit">Get Options</button>
+        
+        {% if options %}
+            <label for="selection">Choose video quality:</label>
+            <select id="selection" name="selection" required>
+                {% for option in options %}
+                    <option value="{{ option.index }}">{{ option.resolution }} - {{ option.mime_type }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Download MP3</button>
+        {% endif %}
+    </form>
+    {% if message %}
+        <p class="message">{{ message }}</p>
+    {% endif %}
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+</body>
+</html>
