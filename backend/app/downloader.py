@@ -17,6 +17,7 @@ def download_media(video_url: str, download_type: str, quality_option: str) -> d
         # CONFIGURACIÓN AUDIO MP3
         ydl_opts = {
             'format': 'bestaudio/best',
+            'cookiefile': 'cookies.txt',  # 🍪 Evita el bloqueo de YouTube
             'outtmpl': f'{download_path}/%(title)s.%(ext)s',
             'restrictfilenames': True,  # Limpia emojis y caracteres inválidos en Windows
             'noplaylist': True,
@@ -31,6 +32,7 @@ def download_media(video_url: str, download_type: str, quality_option: str) -> d
         if quality == "mejor":
             ydl_opts = {
                 'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best',
+                'cookiefile': 'cookies.txt',  # 🍪 Evita el bloqueo de YouTube
                 'outtmpl': f'{download_path}/%(title)s.%(ext)s',
                 'restrictfilenames': True,
                 'merge_output_format': 'mp4',
@@ -42,6 +44,7 @@ def download_media(video_url: str, download_type: str, quality_option: str) -> d
         else:
             ydl_opts = {
                 'format': f'bestvideo[height<={quality}][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<={quality}]+bestaudio/best',
+                'cookiefile': 'cookies.txt',  # 🍪 Evita el bloqueo de YouTube
                 'outtmpl': f'{download_path}/%(title)s.%(ext)s',
                 'restrictfilenames': True,
                 'merge_output_format': 'mp4',
@@ -87,6 +90,7 @@ def get_available_formats(video_url: str) -> dict:
     ydl_opts = {
         'noplaylist': True,
         'extract_flat': False,
+        'cookiefile': 'cookies.txt',  # 🍪 Evita el bloqueo al analizar formatos
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
