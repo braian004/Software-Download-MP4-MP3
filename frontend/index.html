@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YT Media Downloader</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .neon-progress {
+            background-color: #2563eb;
+            box-shadow: 0 0 20px rgba(37, 99, 235, 0.8);
+        }
+        body { background-color: #0b0f19; }
+    </style>
+</head>
+<body class="text-slate-200 min-h-screen flex flex-col justify-between font-sans antialiased">
+
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-12 flex flex-col items-center justify-center">
+        <h1 class="text-3xl font-black tracking-wider text-center uppercase mb-8 text-white flex items-center gap-3">
+            <i class="fa-solid fa-cloud-arrow-down text-blue-500 animate-pulse"></i> Download Your Media
+        </h1>
+
+        <div class="w-full bg-[#111827] border border-white/[0.04] p-4 rounded-2xl flex flex-col sm:flex-row gap-3 shadow-2xl shadow-black/50 mb-8">
+            <div class="relative flex-grow flex items-center">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 text-slate-500 text-sm"></i>
+                <input type="text" id="urlInput" placeholder="Ingresa una URL de YouTube o /shorts/... y presiona Enter" 
+                       class="w-full bg-[#161d2b] border border-white/[0.02] text-slate-200 pl-11 pr-4 py-3.5 rounded-xl text-sm focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/50 transition-all font-medium placeholder-slate-600">
+            </div>
+            <button id="analyzeBtn" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3.5 rounded-xl text-xs tracking-widest uppercase transition-all shadow-lg shadow-blue-600/10 active:scale-[0.95]">
+                ANALYZE URL
+            </button>
+        </div>
+
+        <div id="resultCard" class="w-full bg-[#111827] border border-white/[0.04] rounded-2xl shadow-2xl shadow-black/50 p-6 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+                
+                <div class="md:col-span-2 flex flex-col gap-3">
+                    <div class="relative aspect-video w-full overflow-hidden rounded-xl bg-slate-800 border border-white/[0.02] flex items-center justify-center">
+                        <img id="videoThumb" src="" alt="Thumbnail" class="w-full h-full object-cover">
+                        <span id="videoDuration" class="absolute bottom-2 right-2 bg-black/80 px-2 py-0.5 rounded text-[10px] font-bold text-white tracking-wide uppercase">Ready</span>
+                    </div>
+                    <div>
+                        <h2 id="videoTitle" class="text-sm font-bold text-white line-clamp-2 leading-snug">Video Title</h2>
+                        <p id="videoAuthor" class="text-[11px] text-slate-500 font-medium mt-0.5">by YouTube Creator</p>
+                    </div>
+                </div>
+
+                <div class="md:col-span-3 flex flex-col justify-center">
+                    
+                    <div id="optionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                <i class="fa-solid fa-video text-blue-400"></i> Video MP4
+                            </h3>
+                            <div id="videoQualitiesContainer" class="flex flex-col gap-2"></div>
+                        </div>
+                        <div>
+                            <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                <i class="fa-solid fa-music text-purple-400"></i> Audio MP3
+                            </h3>
+                            <div id="audioQualitiesContainer" class="flex flex-col gap-2"></div>
+                        </div>
+                    </div>
+
+                    <div id="loadingContainer" class="hidden bg-[#161d2b] border border-blue-500/20 p-5 rounded-2xl shadow-inner flex flex-col gap-4">
+                        <div class="flex items-center justify-between border-b border-white/[0.04] pb-3 gap-2">
+                            <div class="flex items-center gap-3 overflow-hidden">
+                                <div class="bg-blue-600/10 p-2.5 rounded-xl border border-blue-500/20 text-blue-400 text-lg animate-spin" id="loadingIcon">
+                                    <i class="fa-solid fa-arrows-spin"></i>
+                                </div>
+                                <div class="overflow-hidden">
+                                    <span class="text-[9px] font-bold uppercase tracking-wider text-blue-400 block" id="downloadFormatLabel">PROCESANDO</span>
+                                    <h4 id="downloadingFileName" class="text-xs font-bold text-white truncate max-w-[200px]">Archivo...</h4>
+                                </div>
+                            </div>
+                            <button id="cancelBtn" class="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white font-bold border border-red-500/20 text-[10px] px-3 py-2 rounded-xl tracking-wider uppercase transition-all duration-200 active:scale-[0.93]">
+                                <i class="fa-solid fa-ban"></i> CANCEL
+                            </button>
+                        </div>
+
+                        <div class="w-full bg-[#0f1420] h-4 rounded-full overflow-hidden p-0.5 border border-white/[0.02]">
+                            <div id="progressBar" class="neon-progress h-full w-0 rounded-full transition-all duration-300"></div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 text-center pt-1">
+                            <div class="bg-[#111622] p-2 rounded-xl border border-white/[0.02]">
+                                <span class="text-[9px] font-semibold text-slate-500 block uppercase">Tamaño / Progreso</span>
+                                <span id="dataAbsorbedLabel" class="text-xs font-black text-slate-200">- / -</span>
+                            </div>
+                            <div class="bg-[#111622] p-2 rounded-xl border border-white/[0.02]">
+                                <span class="text-[9px] font-semibold text-slate-500 block uppercase">Estado / Tiempo</span>
+                                <span id="statusText" class="text-xs font-black text-blue-400">Procesando...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full mt-12">
+            <h3 class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                <i class="fa-solid fa-clock-rotate-left"></i> Recent Downloads
+            </h3>
+            <div id="recentDownloads" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+        </div>
+    </main>
+
+    <footer class="w-full py-4 text-center border-t border-white/[0.02] bg-[#090d16] text-[10px] text-slate-600 tracking-wider font-semibold uppercase">
+        YT Media Downloader Local Engine — Status: <span class="text-green-500 font-bold">Online</span>
+    </footer>
+
+    <script src="app.js?v=1.0.1"></script>
+</body>
+</html>

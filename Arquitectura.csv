@@ -1,0 +1,20 @@
+nombre-de-tu-app/
+│
+├── backend/                  # Todo lo relacionado con Python y la API
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── main.py           # Punto de entrada de FastAPI (rutas y servidor)
+│   │   ├── downloader.py     # Tu código actual de python (lógica de yt-dlp)
+│   │   └── utils.py          # Funciones de ayuda (limpieza de nombres, etc.)
+│   ├── downloads/            # Carpeta temporal para las descargas en el servidor
+│   ├── Dockerfile            # Instrucciones para dockerizar el backend
+│   └── requirements.txt      # Librerías (yt-dlp, fastapi, uvicorn)
+│
+├── frontend/                 # Todo lo relacionado con la interfaz de usuario
+│   ├── index.html            # Página principal
+│   ├── styles.css            # Estilos de la aplicación
+│   ├── app.js                # Lógica para conectar con la API (fetch)
+│   └── Dockerfile            # Instrucciones para dockerizar el frontend (usando Nginx)
+│
+├── docker-compose.yml        # Orquestador para levantar ambos contenedores a la vez
+└── .gitignore                # Archivos que Git debe ignorar (.venv, descargas, etc.)

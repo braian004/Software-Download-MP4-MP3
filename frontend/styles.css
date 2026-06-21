@@ -1,0 +1,69 @@
+/* 1. Fondo base con degradado premium e indexación de color */
+/* 1. Base background with premium gradient and color indexing */
+body {
+    background: radial-gradient(circle at top left, #1c273e 0%, #0e1320 50%, #0a0d16 100%) !important;
+    min-height: 100vh;
+    display: flex;
+    flex-content: column;
+}
+
+/* 2. Efecto Glassmorphism optimizado para GPU (Mejora velocidad de carga / SEO) */
+/* 2. GPU-optimized Glassmorphism effect (Improves load speed / SEO) */
+.main-card {
+    background-color: rgba(17, 22, 37, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    will-change: transform, opacity; /* 👈 Avisa al navegador para renderizado rápido */
+}
+
+/* 3. Contenedor de miniatura responsivo y sin saltos de diseño (CLS = 0) */
+/* 3. Responsive thumbnail container with zero layout shifts (CLS = 0) */
+.ratio-thumbnail {
+    aspect-ratio: 16 / 9;
+    background-color: #000000;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 4. Barra de progreso con resplandor neón */
+/* 4. Progress bar with neon glow */
+.neon-progress {
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.6), 0 0 4px rgba(96, 165, 250, 0.4);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* 👈 Animación suave */
+}
+
+/* 5. Accesibilidad SEO (Mantiene textos legibles para lectores de Google pero ocultos al usuario) */
+/* 5. SEO Accessibility (Keeps text readable for Google crawlers but hidden from users) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* 6. Animación de entrada para los botones de calidad (User Experience Superior) */
+/* 6. Entrance animation for quality buttons (Superior User Experience) */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Se aplica automáticamente al inyectar las filas desde app.js */
+/* Automatically applied when injecting rows from app.js */
+#videoQualitiesContainer > div, 
+#audioQualitiesContainer > div,
+.animate-fade-in {
+    animation: fadeInScale 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

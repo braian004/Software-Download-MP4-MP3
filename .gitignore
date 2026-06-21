@@ -1,0 +1,17 @@
+backend/venv/ 
+# Ignorar videos descargados en el backend
+backend/app/downloads/*
+!backend/app/downloads/.gitkeep
+
+# Ignorar carpetas ocultas de Python y entornos virtuales
+**/__pycache__/
+*.pyc
+.env
+*.mp4
+*.mp3
+backend/downloads/
+downloads/
+backend/app/__pycache__/
+__pycache__/
+.venv/
+node_modules/
